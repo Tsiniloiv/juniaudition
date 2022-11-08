@@ -1,6 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  basePath: '/juniaudition',
   swcMinify: true,
   images: {
     remotePatterns: [
