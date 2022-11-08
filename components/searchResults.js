@@ -24,7 +24,7 @@ export default function SearchResults(props) {
 		Rebuild results whenever they change.
 	*/
 	useEffect(() => {
-		setResultsCache(props.results.map((page) => {if(page.items) page.items.map((item) => <ImageResult data={item} />)}));
+		setResultsCache(props.results.map((page) => {if(page.items) page.items.map((item) => <ImageResult key={item.title} data={item} />)}));
 	}, [props.results]);
 
 	/* 
