@@ -19,11 +19,11 @@ export default function Home() {
   const [showResults, setShowResults] = useState(false);
   const [searchString, setSearchString] = useState("");
 
-  //SWR Hook. Turning off revalidation because I keep accidentally burning through the 100 request per day limit.
+  //SWR Hook. Turning off revalidation because I keep accidentally burning through the 100 request per day limit. This should probably be an API route.
   const fetcher = (requestURL) => fetch(requestURL).then((res) => {
     if(!res.ok) {
       throw "Response not OK!";
-    } 
+    }
     return res.json()
   });
   const SWROptions = {
@@ -35,6 +35,10 @@ export default function Home() {
   }
   const getKey = (pageIndex, previousPageData) => {
     let startOffset = (pageIndex*10) + 1;
+    //JSON API will never return more than 100 results.
+    if(startOffset > 100) {
+      return;
+    }
     return `https://content.googleapis.com/customsearch/v1?cx=001361074102112665899%3Ap7mybnrloug&q="${searchString}"&searchType=image&start=${startOffset}&num=10&key=AIzaSyC10izwLW9YnsNdhzWuz6bxPFUhk_L9K7o`
   }
   const {data, error, isValidating, mutate, size, setSize} = useSWRInfinite(getKey, fetcher, SWROptions);

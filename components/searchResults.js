@@ -18,15 +18,18 @@ import { useState, useEffect } from 'react'
 */
 
 export default function SearchResults(props) {
-	const [resultsCache, setResultsCache] = useState([]);
+	function buildResultsCache() {
+		return props.results.map((page) => {if(page.items) page.items.map((item) => <ImageResult key={item.title} data={item} />)});
+	}
+
+	const [resultsCache, setResultsCache] = useState(buildResultsCache());
+	//TODO: Check if this works to initialize the resultsCache state.
 
 	/* 
 		Rebuild results whenever they change.
 	*/
 	useEffect(() => {
-		if(props.results && !props.error) {
-			setResultsCache(props.results.map((page) => {if(page.items) page.items.map((item) => <ImageResult key={item.title} data={item} />)}));
-		}
+		setResultsCache(buildResultsCache());
 	}, [props.results]);
 
 	/* 
@@ -50,7 +53,7 @@ export default function SearchResults(props) {
 
 	if(props.error) return(<div>Sorry! Something went wrong!</div>);
 	//For when SWR hasn't returned any results yet.
-	if(props.results == undefined) return(
+	if(!props.results) return(
 		<div>{_renderLoaderOrWaypoint()}</div>
 	);
 
