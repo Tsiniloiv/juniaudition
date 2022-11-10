@@ -18,17 +18,6 @@ import { useState, useEffect } from 'react'
 */
 
 export default function SearchResults(props) {
-	const [resultsCache, setResultsCache] = useState([]);
-
-	/* 
-		Rebuild results whenever they change.
-	*/
-	useEffect(() => {
-		if(props.results && !props.error) {
-			setResultsCache(props.results.map((page) => {if(page.items) page.items.map((item) => <ImageResult key={item.title} data={item} />)}));
-		}
-	}, [props.results]);
-
 	/* 
 		_renderWaypoint() handles displaying our loading indicator, as well as setting our scroll waypoint.
 
@@ -53,12 +42,20 @@ export default function SearchResults(props) {
 	if(props.results == undefined) return(
 		<div>{_renderLoaderOrWaypoint()}</div>
 	);
+	const [resultsCache, setResultsCache] = useState([]);
 
 	const onWaypointEnter = () => {
 		if(!props.isValidating) {
 			props.setPage(props.page+1);
 		}
 	}
+
+	/* 
+		Rebuild results whenever they change.
+	*/
+	useEffect(() => {
+		setResultsCache(props.results.map((page) => {if(page.items) page.items.map((item) => <ImageResult data={item} />)}));
+	}, [props.results]);
 
 	return (
 		<div class="container flex flex-row flex-wrap h-full pt-4">

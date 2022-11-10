@@ -31,7 +31,7 @@ export default function Home() {
     revalidateOnMount: false,
     revalidateOnReconnect: false,
     shouldRetryOnError: false,
-    initialSize: 5
+    initialSize: 1
   }
   const getKey = (pageIndex, previousPageData) => {
     let startOffset = (pageIndex*10) + 1;
