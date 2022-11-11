@@ -283,13 +283,30 @@ export default function Home() {
   const [searchResults, setSearchResults] = useState([]);
   const [searchString, setSearchString] = useState("");
 
+  function SUCC(data, key, options) {
+    let newData = []
+      data.forEach(
+        page => {
+          if(page.items) {
+            page.items.forEach(
+              item => {
+                newData.push(<ImageResult key={item.title} data={item} />);
+              }
+            )
+          }
+        }
+      );
+      setSearchResults(newData);
+  }
+
   //Turning off revalidation because I keep accidentally burning through the 100 request per day limit.
   const SWROptions = {
     revalidateOnFocus: false,
     revalidateOnMount: false,
     revalidateOnReconnect: false,
     shouldRetryOnError: false,
-    initialSize: 1
+    initialSize: 1,
+    onSuccess: 
   }
   function getKey(pageIndex, previousPageData) {
     if(searchString) {
@@ -352,7 +369,7 @@ export default function Home() {
       return error;
     }
     if(searchResults && !error) {
-      return JSON.stringify(data);
+      return "Data: " + JSON.stringify(data);
     }
   }
 
