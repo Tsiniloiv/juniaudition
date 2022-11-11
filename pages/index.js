@@ -308,8 +308,7 @@ export default function Home() {
     revalidateOnMount: false,
     revalidateOnReconnect: false,
     shouldRetryOnError: false,
-    initialSize: 1,
-    onSuccess: SUCC
+    initialSize: 1
   }
   function getKey(pageIndex, previousPageData) {
     if(searchString) {
