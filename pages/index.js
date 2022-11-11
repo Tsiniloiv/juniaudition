@@ -10,18 +10,8 @@ import { Waypoint } from 'react-waypoint'
   This is probably less modular than it could be, but since this is a one-off, it doesn't especially *need* to be reusable.
 */
 
-export default function Home() {
-  /*
-  State initialization.
-  State breakdown:
-    searchResults: State storage for render-ready search results. Updates on useEffect.
-    searchString: The value of the input field. Initial value: Empty String. Setter hooked into the form input onChange. Used for forming requestURL.
- */
-  const [searchResults, setSearchResults] = useState([]);
-  const [searchString, setSearchString] = useState("");
-
   // A one-page response copied from a successful result, and a dummy fetcher function that returns this object.
-  const testObject = {
+const testObject = {
   "kind": "customsearch#search",
   "url": {
     "type": "application/json",
@@ -269,20 +259,31 @@ export default function Home() {
     }
   ]
 }
-  const testFetcher = (requestURL) => testObject;
+const testFetcher = (requestURL) => testObject;
 
-  //SWR Hook. Turning off revalidation because I keep accidentally burning through the 100 request per day limit.
-  async function fetcher(key) {
-      return fetch(key).then(
-        (res) => {
-          if(!res.ok) {
-            throw (`ERROR: ${res.status}`);
-          }
-          return(res.json());
-        }
-      );
-  }
+//SWR Hook.
+async function fetcher(key) {
+  return fetch(key).then(
+    (res) => {
+      if(!res.ok) {
+        throw (`ERROR: ${res.status}`);
+      }
+      return(res.json());
+    }
+  );
+}
 
+export default function Home() {
+  /*
+  State initialization.
+  State breakdown:
+    searchResults: State storage for render-ready search results. Updates on useEffect.
+    searchString: The value of the input field. Initial value: Empty String. Setter hooked into the form input onChange. Used for forming requestURL.
+ */
+  const [searchResults, setSearchResults] = useState([]);
+  const [searchString, setSearchString] = useState("");
+
+  //Turning off revalidation because I keep accidentally burning through the 100 request per day limit.
   const SWROptions = {
     revalidateOnFocus: false,
     revalidateOnMount: false,
@@ -328,7 +329,7 @@ export default function Home() {
       );
       setSearchResults(newData);
     }
-  }, [data, error]);
+  }, [data, error, isValidating]);
 
   //Shows a spinny loader if SWR is validating, puts down a Waypoint if we have validated results.
   function renderWaypointOrLoader() {
