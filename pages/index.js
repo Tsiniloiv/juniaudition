@@ -288,6 +288,7 @@ export default function Home() {
 
   //Turning off revalidation because I keep accidentally burning through the 100 request per day limit.
   const SWROptions = {
+    shouldRetryOnError: false,
     initialSize: 1
   }
 
