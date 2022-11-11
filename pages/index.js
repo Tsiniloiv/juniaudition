@@ -273,14 +273,12 @@ export default function Home() {
 
   //SWR Hook. Turning off revalidation because I keep accidentally burning through the 100 request per day limit.
   const fetcher = (requestURL) => {
-    if(searchString != "") {
       fetch(requestURL).then((res) => {
       if(!res.ok) {
         throw "Response not OK!";
       } 
-      return res.json()
-    });
-    }
+        return res.json()
+      });
   }
   const SWROptions = {
     revalidateOnFocus: false,
