@@ -305,7 +305,7 @@ export default function Home() {
   //Building and storing render-ready results.
   useEffect(() => {
     let newData = []
-    if(data) {
+    if(data != undefined) {
       data.forEach(page => page.items.forEach(item => {
         newData.push(<ImageResult key={item.title} data={item} />);
       }));
