@@ -315,15 +315,17 @@ export default function Home() {
 
   //Shows a spinny loader if SWR is validating, puts down a Waypoint if we have validated results.
   function renderWaypointOrLoader() {
-    if(isValidating) {
-      return(
-        <svg class="animate-spin h-20 w-20 mr-3 ..." viewBox="0 0 50 50">
-          <path fill="#FFF" d="M25.251,6.461c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615V6.461z"/>
-        </svg>
-      )
-    }
-    if(!isValidating && searchResults) {
-      return <Waypoint onEnter={onWaypointEnter} />
+    if(searchResults) {
+      if(isValidating) {
+        return(
+          <svg class="animate-spin h-20 w-20 mr-3 ..." viewBox="0 0 50 50">
+            <path fill="#FFF" d="M25.251,6.461c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615V6.461z"/>
+          </svg>
+        )
+      }
+      if(!isValidating) {
+        return <Waypoint onEnter={onWaypointEnter} />
+      }
     }
   }
 
