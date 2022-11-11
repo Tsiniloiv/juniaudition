@@ -304,10 +304,6 @@ export default function Home() {
 
   //Turning off revalidation because I keep accidentally burning through the 100 request per day limit.
   const SWROptions = {
-    revalidateOnFocus: false,
-    revalidateOnMount: false,
-    revalidateOnReconnect: false,
-    shouldRetryOnError: false,
     initialSize: 1
   }
   function getKey(pageIndex, previousPageData) {
@@ -384,7 +380,7 @@ export default function Home() {
       <main>
         <h1 class="text-xl m-3">Myndaleit</h1>
 
-        <div class="container m-1">
+        <div>
             <form onSubmit={onSubmit} method="post">
               <label class="m-1" htmlFor="searchString">Leita að:</label>
               <input class="m-1 p-1" type="text" id="searchString" name="searchString" />
@@ -392,11 +388,11 @@ export default function Home() {
             </form>
         </div>
 
-        <div>
-          searchString: {searchString}
-          validating: {JSON.stringify(isValidating)}
-          data: {JSON.stringify(data)}
-          searchResults: {JSON.stringify(searchResults)}
+        <div class="flex flex-column">
+          searchString: {searchString} <br />
+          validating: {JSON.stringify(isValidating)}<br />
+          data: {JSON.stringify(data)}<br />
+          searchResults: {JSON.stringify(searchResults)}<br />
         </div>
 
         <div class="container flex flex-row flex-wrap h-full pt-4">
