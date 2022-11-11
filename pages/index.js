@@ -260,12 +260,12 @@ const testObject = {
   ]
 }
 //const testFetcher = (requestURL) => testObject;
-async function testFetcher(key) {
-  return((key) => testObject);
+function testFetcher(key) {
+  return testObject;
 }
 
 //SWR Hook.
-async function fetcher(key) {
+function fetcher(key) {
   return fetch(key).then(
     (res) => {
       if(!res.ok) {
