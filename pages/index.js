@@ -259,7 +259,10 @@ const testObject = {
     }
   ]
 }
-const testFetcher = (requestURL) => testObject;
+//const testFetcher = (requestURL) => testObject;
+async function testFetcher(key) {
+  return((key) => testObject);
+}
 
 //SWR Hook.
 async function fetcher(key) {
