@@ -345,7 +345,7 @@ export default function Home() {
       </Head>
 
       <main>
-        <div>{JSON.stringify(searchResults)}</div>
+        <div>{data}</div>
         <h1 class="text-xl m-3">Myndaleit</h1>
 
         <div class="container m-1">
