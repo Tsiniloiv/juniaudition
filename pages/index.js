@@ -259,7 +259,7 @@ const testObject = {
     }
   ]
 }
-//const testFetcher = (requestURL) => testObject;
+
 function testFetcher(key) {
   return testObject;
 }
@@ -286,26 +286,11 @@ export default function Home() {
   const [searchResults, setSearchResults] = useState([]);
   const [searchString, setSearchString] = useState("");
 
-  function SUCC(data, key, options) {
-    let newData = []
-      data.forEach(
-        page => {
-          if(page.items) {
-            page.items.forEach(
-              item => {
-                newData.push(<ImageResult key={item.title} data={item} />);
-              }
-            )
-          }
-        }
-      );
-      setSearchResults(newData);
-  }
-
   //Turning off revalidation because I keep accidentally burning through the 100 request per day limit.
   const SWROptions = {
     initialSize: 1
   }
+
   function getKey(pageIndex, previousPageData) {
     if(searchString) {
       let startOffset = (pageIndex*10) + 1;
@@ -314,7 +299,7 @@ export default function Home() {
       return `https://content.googleapis.com/customsearch/v1?cx=001361074102112665899%3Ap7mybnrloug&q="${searchString}"&searchType=image&start=${startOffset}&num=10&key=${apiKey}`;
     } else return null;
   }
-  const {data, error, isValidating, mutate, size, setSize} = useSWRInfinite(getKey, testFetcher, SWROptions);
+  const {data, error, isValidating, mutate, size, setSize} = useSWRInfinite(getKey, fetcher, SWROptions);
 
   //onSubmit hook for the search form. Sets requestURL and orders SWR to mutate.
   const onSubmit = (e) => {
@@ -386,13 +371,6 @@ export default function Home() {
               <input class="m-1 p-1" type="text" id="searchString" name="searchString" />
               <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" type="submit">Leita</button>
             </form>
-        </div>
-
-        <div class="flex flex-column">
-          searchString: {searchString} <br />
-          validating: {JSON.stringify(isValidating)}<br />
-          data: {JSON.stringify(data)}<br />
-          searchResults: {JSON.stringify(searchResults)}<br />
         </div>
 
         <div class="container flex flex-row flex-wrap h-full pt-4">
