@@ -272,14 +272,10 @@ export default function Home() {
   const testFetcher = (requestURL) => testObject;
 
   //SWR Hook. Turning off revalidation because I keep accidentally burning through the 100 request per day limit.
-  const fetcher = (requestURL) => {
-      fetch(requestURL).then((res) => {
-      if(!res.ok) {
-        throw "Response not OK!";
-      } 
-        return res.json()
-      });
+  async function fetcher(key) {
+      return fetch(key).then((res) => res.json());
   }
+
   const SWROptions = {
     revalidateOnFocus: false,
     revalidateOnMount: false,
@@ -287,7 +283,7 @@ export default function Home() {
     shouldRetryOnError: false,
     initialSize: 1
   }
-  const getKey = (pageIndex, previousPageData) => {
+  function getKey(pageIndex, previousPageData) {
     if(searchString) {
       let startOffset = (pageIndex*10) + 1;
       return `https://content.googleapis.com/customsearch/v1?cx=001361074102112665899%3Ap7mybnrloug&q="${searchString}"&searchType=image&start=${startOffset}&num=10&key=AIzaSyC10izwLW9YnsNdhzWuz6bxPFUhk_L9K7o`;
@@ -308,11 +304,7 @@ export default function Home() {
 
   //Building and storing render-ready results.
   useEffect(() => {
-    if(!data) {
-      return;
-    }
-    if(data) {
-      console.log(data);
+    if(data && !isValidating) {
       let newData = []
       data.forEach(
         page => {
