@@ -344,6 +344,15 @@ export default function Home() {
     }
   }
 
+  function renderResultsOrError() {
+    if(error) {
+      return error;
+    }
+    if(searchResults && !error) {
+      return searchResults;
+    }
+  }
+
   return (
     <div>
       <Head>
@@ -361,10 +370,8 @@ export default function Home() {
             </form>
         </div>
 
-        <div>{error}</div>
-
         <div class="container flex flex-row flex-wrap h-full pt-4">
-          {searchResults}
+          {renderResultsOrError()}
           {renderWaypointOrLoader()}
         </div>
       </main>
