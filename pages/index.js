@@ -314,7 +314,7 @@ export default function Home() {
         if(page.items) {
           page.items.forEach(item => {
             newData.push(<ImageResult key={item.title} data={item} />);
-          }));
+          });
         }
       }
       setSearchResults(newData);
