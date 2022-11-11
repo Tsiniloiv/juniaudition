@@ -293,7 +293,9 @@ export default function Home() {
   function getKey(pageIndex, previousPageData) {
     if(searchString) {
       let startOffset = (pageIndex*10) + 1;
-      return `https://content.googleapis.com/customsearch/v1?cx=001361074102112665899%3Ap7mybnrloug&q="${searchString}"&searchType=image&start=${startOffset}&num=10&key=AIzaSyC10izwLW9YnsNdhzWuz6bxPFUhk_L9K7o`;
+      //API Key goes here. Change this if you want to rebuild and test.
+      let apiKey = "AIzaSyC10izwLW9YnsNdhzWuz6bxPFUhk_L9K7o"
+      return `https://content.googleapis.com/customsearch/v1?cx=001361074102112665899%3Ap7mybnrloug&q="${searchString}"&searchType=image&start=${startOffset}&num=10&key=${apiKey}`;
     } else return null;
   }
   const {data, error, isValidating, mutate, size, setSize} = useSWRInfinite(getKey, fetcher, SWROptions);
