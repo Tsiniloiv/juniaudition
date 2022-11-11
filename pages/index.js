@@ -310,9 +310,13 @@ export default function Home() {
   useEffect(() => {
     let newData = []
     if(!isValidating) {
-      data.forEach(page => page.items.forEach(item => {
-        newData.push(<ImageResult key={item.title} data={item} />);
-      }));
+      data.forEach(page => {
+        if(page.items) {
+          page.items.forEach(item => {
+            newData.push(<ImageResult key={item.title} data={item} />);
+          }));
+        }
+      }
       setSearchResults(newData);
     }
   }, [data]);
