@@ -298,7 +298,7 @@ export default function Home() {
       return `https://content.googleapis.com/customsearch/v1?cx=001361074102112665899%3Ap7mybnrloug&q="${searchString}"&searchType=image&start=${startOffset}&num=10&key=${apiKey}`;
     } else return null;
   }
-  const {data, error, isValidating, mutate, size, setSize} = useSWRInfinite(getKey, fetcher, SWROptions);
+  const {data, error, isValidating, mutate, size, setSize} = useSWRInfinite(getKey, testFetcher, SWROptions);
 
   //onSubmit hook for the search form. Sets requestURL and orders SWR to mutate.
   const onSubmit = (e) => {
