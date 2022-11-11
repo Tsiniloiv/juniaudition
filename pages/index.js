@@ -352,7 +352,7 @@ export default function Home() {
       return error;
     }
     if(searchResults && !error) {
-      return searchResults;
+      return JSON.stringify(searchResults);
     }
   }
 
