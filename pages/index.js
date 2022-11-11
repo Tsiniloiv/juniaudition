@@ -273,7 +273,14 @@ export default function Home() {
 
   //SWR Hook. Turning off revalidation because I keep accidentally burning through the 100 request per day limit.
   async function fetcher(key) {
-      return fetch(key).then((res) => res.json());
+      return fetch(key).then(
+        (res) => {
+          if(!res.ok) {
+            throw (`ERROR: ${res.status}`);
+          }
+          return(res.json());
+        }
+      );
   }
 
   const SWROptions = {
@@ -318,13 +325,12 @@ export default function Home() {
         }
       );
       setSearchResults(newData);
-      mutate();
     }
-  }, [data]);
+  }, [data, error]);
 
   //Shows a spinny loader if SWR is validating, puts down a Waypoint if we have validated results.
   function renderWaypointOrLoader() {
-    if(searchResults) {
+    if(searchResults && !error) {
       if(isValidating) {
         return(
           <svg class="animate-spin h-20 w-20 mr-3 ..." viewBox="0 0 50 50">
@@ -345,7 +351,6 @@ export default function Home() {
       </Head>
 
       <main>
-        <div>{JSON.stringify(data)}</div>
         <h1 class="text-xl m-3">Myndaleit</h1>
 
         <div class="container m-1">
@@ -355,6 +360,8 @@ export default function Home() {
               <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" type="submit">Leita</button>
             </form>
         </div>
+
+        <div>{error}</div>
 
         <div class="container flex flex-row flex-wrap h-full pt-4">
           {searchResults}
