@@ -328,6 +328,7 @@ export default function Home() {
         }
       );
       setSearchResults(newData);
+      mutate();
     }
   }, [data, error, isValidating]);
 
