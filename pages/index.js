@@ -328,7 +328,6 @@ export default function Home() {
         }
       );
       setSearchResults(newData);
-      mutate();
     }
   }, [data, error, isValidating]);
 
@@ -353,7 +352,7 @@ export default function Home() {
       return error;
     }
     if(searchResults && !error) {
-      return JSON.stringify(searchResults);
+      return JSON.stringify(data);
     }
   }
 
