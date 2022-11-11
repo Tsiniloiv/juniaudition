@@ -272,12 +272,16 @@ export default function Home() {
   const testFetcher = (requestURL) => testObject;
 
   //SWR Hook. Turning off revalidation because I keep accidentally burning through the 100 request per day limit.
-  const fetcher = (requestURL) => fetch(requestURL).then((res) => {
-    if(!res.ok) {
-      throw "Response not OK!";
-    } 
-    return res.json()
-  });
+  const fetcher = (requestURL) => {
+    if(searchString != "") {
+      fetch(requestURL).then((res) => {
+      if(!res.ok) {
+        throw "Response not OK!";
+      } 
+      return res.json()
+    });
+    }
+  }
   const SWROptions = {
     revalidateOnFocus: false,
     revalidateOnMount: false,
@@ -286,8 +290,10 @@ export default function Home() {
     initialSize: 1
   }
   const getKey = (pageIndex, previousPageData) => {
-    let startOffset = (pageIndex*10) + 1;
-    return `https://content.googleapis.com/customsearch/v1?cx=001361074102112665899%3Ap7mybnrloug&q="${searchString}"&searchType=image&start=${startOffset}&num=10&key=AIzaSyC10izwLW9YnsNdhzWuz6bxPFUhk_L9K7o`
+    if(searchString) {
+      let startOffset = (pageIndex*10) + 1;
+      return `https://content.googleapis.com/customsearch/v1?cx=001361074102112665899%3Ap7mybnrloug&q="${searchString}"&searchType=image&start=${startOffset}&num=10&key=AIzaSyC10izwLW9YnsNdhzWuz6bxPFUhk_L9K7o`;
+    } else return null;
   }
   const {data, error, isValidating, mutate, size, setSize} = useSWRInfinite(getKey, fetcher, SWROptions);
 
@@ -305,7 +311,7 @@ export default function Home() {
   //Building and storing render-ready results.
   useEffect(() => {
     let newData = []
-    if(data != undefined) {
+    if(!isValidating) {
       data.forEach(page => page.items.forEach(item => {
         newData.push(<ImageResult key={item.title} data={item} />);
       }));
