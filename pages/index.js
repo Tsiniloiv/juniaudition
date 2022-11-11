@@ -304,7 +304,7 @@ export default function Home() {
 
   //Building and storing render-ready results.
   useEffect(() => {
-    if(data && !isValidating) {
+    if(data) {
       let newData = []
       data.forEach(
         page => {
